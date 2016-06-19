@@ -27,7 +27,7 @@ For example, on a Mac the folder is located in:
 */
 
 /*globals adsk*/
-function run(context) {
+(function () {
 
     "use strict";
 
@@ -273,7 +273,7 @@ function run(context) {
                 // If exporting then we need to build the name for this iteration
                 var exportFilenamePrefix = params.exportFilename;
                 if (isExporting) {
-                    exportFilenamePrefix += '_'+params.paramName+'_'+iStep;
+                    exportFilenamePrefix += '_'+Math.round(iStep*100)+'_percent';
                 }
 
                 // Now do the post increment operation
@@ -326,7 +326,7 @@ function run(context) {
                     case PARAM_OPERATION.EXPORT_STL:
                         var stlOptions = exportMgr.createSTLExportOptions(design.rootComponent, exportFilenamePrefix+'.stl');
                         stlOptions.isBinaryFormat = true;
-                        stlOptions.meshRefinement = adsk.fusion.MeshRefinementSettings.MeshRefinementHigh;
+                        stlOptions.meshRefinement = adsk.fusion.MeshRefinementSettings.MeshRefinementMedium;
                         resExport = exportMgr.execute(stlOptions);
                         break;
                 }
@@ -358,4 +358,5 @@ function run(context) {
         ui.messageBox('Script Failed : ' + (e.description ? e.description : e));
         adsk.terminate();
     }
-}
+
+}());
