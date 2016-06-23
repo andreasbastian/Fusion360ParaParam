@@ -106,30 +106,30 @@ For example, on a Mac the folder is located in:
             }
 
             var valueStart = adsk.core.ValueInput.createByReal(1.0);
-            inputs.addValueInput('valueStart', 'Start Value', 'cm' , valueStart);
+            inputs.addValueInput('valueStart', 'Start Value', '' , valueStart);
 
-            var valueEnd = adsk.core.ValueInput.createByReal(10.0);
-            inputs.addValueInput('valueEnd', 'End Value', 'cm' , valueEnd);
+            var valueEnd = adsk.core.ValueInput.createByReal(1.55);
+            inputs.addValueInput('valueEnd', 'End Value', '' , valueEnd);
 
-            var valueInc = adsk.core.ValueInput.createByReal(1.0);
-            inputs.addValueInput('valueInc', 'Increment Value', 'cm' , valueInc);
+            var valueInc = adsk.core.ValueInput.createByReal(0.05);
+            inputs.addValueInput('valueInc', 'Increment Value', '' , valueInc);
 
             var operInput = inputs.addDropDownCommandInput('operation', 'Operation', adsk.core.DropDownStyles.TextListDropDownStyle );
-            operInput.listItems.add('Value Only',true);
+            operInput.listItems.add('Value Only',false);
             //operInput.listItems.add('Clone Selected Bodies',false);
             operInput.listItems.add('Export to Fusion',false);
             operInput.listItems.add('Export to IGES',false);
             operInput.listItems.add('Export to SAT',false);
             operInput.listItems.add('Export to SMT',false);
             operInput.listItems.add('Export to STEP',false);
-            operInput.listItems.add('Export to STL',false);
+            operInput.listItems.add('Export to STL',true);
 
             //SelectionCommandInput
             //var selInput = inputs.addSelectionInput('selection','Selection','Select bodies for operation or none');
             //selInput.addSelectionFilter( 'Bodies' );    // and Faces and/or sketch elements?
 
             //BoolValueCommandInput
-            inputs.addBoolValueInput('pause', 'Pause each iteration', true);
+            //inputs.addBoolValueInput('pause', 'Pause each iteration', true);
         }
         catch (e) {
             ui.messageBox('Failed to create command : ' + (e.description ? e.description : e));
