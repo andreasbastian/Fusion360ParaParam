@@ -27,7 +27,7 @@ For example, on a Mac the folder is located in:
 */
 
 /*globals adsk*/
-function run(context) {
+(function () {
 
     "use strict";
 
@@ -49,7 +49,7 @@ function run(context) {
         LAST: 6
     };
 
-    var appTitle = 'ParaParam';
+    var appTitle = 'MultiParam';
 
     var app = adsk.core.Application.get(), ui;
     if (app) {
@@ -98,30 +98,35 @@ function run(context) {
             // Define the inputs.
             var inputs = command.commandInputs;
 
-            var paramInput = inputs.addDropDownCommandInput('param', 'Which Parameter', adsk.core.DropDownStyles.TextListDropDownStyle );
+            var paramInput1 = inputs.addDropDownCommandInput('param 1', 'Select parameter 1', adsk.core.DropDownStyles.TextListDropDownStyle );
+            var paramInput2 = inputs.addDropDownCommandInput('param 2', 'Select parameter 2', adsk.core.DropDownStyles.TextListDropDownStyle );
+
 
             // Get the parameter names
             for (var iParam = 0; iParam < paramsList.count; ++iParam) {
-                paramInput.listItems.add(paramsList.item(iParam).name,(iParam === 0));
+                paramInput1.listItems.add(paramsList.item(iParam).name,(iParam === 0));
+            }
+            for (var iParam = 0; iParam < paramsList.count; ++iParam) {
+                paramInput2.listItems.add(paramsList.item(iParam).name,(iParam === 0));
             }
 
-            var valueStart = adsk.core.ValueInput.createByReal(1.0);
-            inputs.addValueInput('valueStart', 'Start Value', '' , valueStart);
+            var val_1_start = adsk.core.ValueInput.createByReal(1.0); //formerly valueStart
+            inputs.addValueInput('val_1_start', 'Start Value', '' , val_1_start);
 
-            var valueEnd = adsk.core.ValueInput.createByReal(1.55);
-            inputs.addValueInput('valueEnd', 'End Value', '' , valueEnd);
+            var val_1_start = adsk.core.ValueInput.createByReal(1.55); //formerly vlaueEnd
+            inputs.addValueInput('val_1_end', 'End Value', '' , val_1_end);
 
-            var valueInc = adsk.core.ValueInput.createByReal(0.05);
-            inputs.addValueInput('valueInc', 'Increment Value', '' , valueInc);
+            var val_1_start = adsk.core.ValueInput.createByReal(0.05); //formerly valueInc
+            inputs.addValueInput('val_1_inc', 'Increment Value', '' , val_1_inc);
 
             var operInput = inputs.addDropDownCommandInput('operation', 'Operation', adsk.core.DropDownStyles.TextListDropDownStyle );
-            operInput.listItems.add('Value Only',false);
+            // operInput.listItems.add('Value Only',false);
             //operInput.listItems.add('Clone Selected Bodies',false);
             operInput.listItems.add('Export to Fusion',false);
-            operInput.listItems.add('Export to IGES',false);
-            operInput.listItems.add('Export to SAT',false);
-            operInput.listItems.add('Export to SMT',false);
-            operInput.listItems.add('Export to STEP',false);
+            // operInput.listItems.add('Export to IGES',false);
+            // operInput.listItems.add('Export to SAT',false);
+            // operInput.listItems.add('Export to SMT',false);
+            // operInput.listItems.add('Export to STEP',false);
             operInput.listItems.add('Export to STL',true);
 
             //SelectionCommandInput
@@ -145,14 +150,14 @@ function run(context) {
             var command = adsk.core.Command(args.firingEvent.sender);
             var inputs = command.commandInputs;
 
-            var paramInput, valueStartInput, valueEndInput, valueIncInput, operationInput, selInput, pauseInput;
+            var paramInput1, valueStartInput, valueEndInput, valueIncInput, operationInput, selInput, pauseInput;
 
             // REVIEW: Problem with a problem - the inputs are empty at this point. We
             // need access to the inputs within a command during the execute.
             for (var n = 0; n < inputs.count; n++) {
                 var input = inputs.item(n);
                 if (input.id === 'param') {
-                    paramInput = adsk.core.DropDownCommandInput(input);
+                    paramInput1 = adsk.core.DropDownCommandInput(input);
                 }
                 else if (input.id === 'valueStart') {
                     valueStartInput = adsk.core.ValueCommandInput(input);
@@ -174,7 +179,7 @@ function run(context) {
                 }
             }
 
-            if (!paramInput || !valueStartInput || !valueEndInput || !valueIncInput || !operationInput || !pauseInput) { // || !selInput) {
+            if (!paramInput1 || !valueStartInput || !valueEndInput || !valueIncInput || !operationInput || !pauseInput) { // || !selInput) {
                 ui.messageBox("One of the inputs does not exist.");
                 return;
             }
@@ -190,7 +195,7 @@ function run(context) {
                 exportFilename: ""
             };
 
-            var iParam = paramInput.selectedItem.index;
+            var iParam = paramInput1.selectedItem.index;
             if (iParam < 0) {
                 ui.messageBox("No parameter name selected");
                 return false;
@@ -359,4 +364,4 @@ function run(context) {
         adsk.terminate();
     }
 
-}
+}());
